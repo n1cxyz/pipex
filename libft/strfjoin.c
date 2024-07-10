@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   strfjoin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dasal <dasal@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/08 14:00:25 by dasal             #+#    #+#             */
-/*   Updated: 2024/07/08 14:00:27 by dasal            ###   ########.fr       */
+/*   Created: 2024/07/10 08:57:59 by dasal             #+#    #+#             */
+/*   Updated: 2024/07/10 08:58:01 by dasal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include "libft.h"
 
-typedef struct s_var
+char	*ft_strfjoin(char *s1, char const *s2)
 {
-	char	**paths;
-	char	**args;
+	char	*result;
+	char	*result_ptr;
 
-}	t_var;
-
-void	ft_get_paths(t_var *var, char **envp);
-void    ft_get_args(t_var *var, char *infile, char *cmd_1);
-void	ft_free_all(t_var *var);
+	if (!s1 || !s2)
+		return (NULL);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!result)
+		return (NULL);
+	result_ptr = result;
+	while (*s1)
+		*result++ = *s1++;
+	while (*s2)
+		*result++ = *s2++;
+	*result = '\0';
+    //free (s1);
+	return (result_ptr);
+}

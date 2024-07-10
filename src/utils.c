@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dasal <dasal@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/08 14:00:25 by dasal             #+#    #+#             */
-/*   Updated: 2024/07/08 14:00:27 by dasal            ###   ########.fr       */
+/*   Created: 2024/07/10 11:19:15 by dasal             #+#    #+#             */
+/*   Updated: 2024/07/10 11:19:16 by dasal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include "libft.h"
+#include "pipex.h"
 
-typedef struct s_var
+void	ft_free_all(t_var *var)
 {
-	char	**paths;
-	char	**args;
+    int i;
 
-}	t_var;
-
-void	ft_get_paths(t_var *var, char **envp);
-void    ft_get_args(t_var *var, char *infile, char *cmd_1);
-void	ft_free_all(t_var *var);
+    i = 0;
+	while (var->paths[i])
+	{
+		free (var->paths[i]);
+		i++;
+	}
+	free (var->paths);
+	i = 0;
+	while (var->args[i])
+	{
+		free (var->args[i]);
+		i++;
+	}
+	free (var->args);
+}

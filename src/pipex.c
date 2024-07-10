@@ -21,64 +21,30 @@ args[1] = "-m";
 args[2] = NULL;
 execve("/bin/ls", args, NULL);
 */
-int main(int argc, char *argv[], char *envp[])
+int main(int ac, char **av, char **envp)
 {
+	t_var	var;
 	int		i;
-	char	**paths;
 	char	*path;
-	char	*path_2;
-	char	**args;
+	char	*temp_path;
 	
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH", 4) == 0) //find PATH environment 
-			break;
-		i++;
-	}
-
-	paths = ft_split(envp[i] + 5, ':');
-	if (!paths)
-	{
-		printf("path split"); // paths[/../../..][/bin/][NULL]
-		exit (EXIT_FAILURE);
-	}
-
-	args = ft_split(argv[2], ' ');
-	if (!args)
-	{
-		printf("cmd split"); // cmd[ls][-l][NULL]
-		exit (EXIT_FAILURE);
-	}
+	ft_get_paths(&var, envp);
+	ft_get_args(&var, av[1], av[2]);
 
 	i = 0;
-	while (paths[i])
+	while (var.paths[i])
 	{
-		path = ft_strjoin(paths[i], "/"); //find available command path /bin/ls
-		/* path_2 = path; // invalid read
-		free (path); */
-		path = ft_strjoin(path, args[0]);  //with access("/bin/ls", X_OK)
+		temp_path = ft_strjoin(var.paths[i], "/"); //find available command path /bin/ls
+		path = ft_strjoin(temp_path, var.args[0]);  //with access("/bin/ls", X_OK)
+		free(temp_path);
 		if (access(path, X_OK) == 0)
-			execve(path, args, envp);
+			execve(path, var.args, envp);
 		free (path);
 		i++;
 	}
-	printf("Error\ncommand not found: %s\n", args[0]);
+	perror("Error\ncommand not found\n");
 
-	i = 0;
-	while (paths[i])
-	{
-		free (paths[i]);
-		i++;
-	}
-	free (paths);
-	i = 0;
-	while (args[i])
-	{
-		free (args[i]);
-		i++;
-	}
-	free (args);
+	ft_free_all(&var);
 	
 	return 0;
 }
