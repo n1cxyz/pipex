@@ -22,11 +22,18 @@
 
 typedef struct s_var
 {
+	int		input_fd;
+	int		output_fd;
 	char	**paths;
 	char	**args;
-
+	char	*cmd_path;
 }	t_var;
 
-void	ft_get_paths(t_var *var, char **envp);
+//		parsing
+void	ft_get_paths(t_var *var, char const **envp);
 void    ft_get_args(t_var *var, char *infile, char *cmd_1);
+int		ft_get_cmd_path(t_var *var);
+//		utils
 void	ft_free_all(t_var *var);
+void    ft_open_files(t_var *var, char *infile, char *outfile);
+void    ft_error_exit(char *message);

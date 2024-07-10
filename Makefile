@@ -1,7 +1,7 @@
 NAME		= pipex
 CC			= gcc
 BIN			= bin
-SRC			= src/pipex.c src/utils.c src/parsing.c
+SRC			= src/main.c src/utils.c src/parsing.c
 OBJS		= $(SRC:src/%c=$(BIN)/%o)
 INCS		= include
 LIBFT		= libft
