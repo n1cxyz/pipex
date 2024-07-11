@@ -25,7 +25,7 @@ void	ft_free_all(t_var *var)
 	}
 	free(var->paths);
 	i = 0;
-	while (i < 2) //cmd_count
+	while (i < var->cmd_count) //cmd_count
 	{
 		j = 0;
 		while (var->args[i][j])
@@ -70,6 +70,6 @@ void    ft_open_files(t_var *var, char *infile, char *outfile)
 
 void	ft_init_vars(t_var *var)
 {
-	var->args = malloc(sizeof(char **) * 2); // cmd_count
-	var->cmd_path = malloc(sizeof(char *) * 2); // cmd_count
+	var->args = malloc(sizeof(char **) * var->cmd_count); // cmd_count
+	var->cmd_path = malloc(sizeof(char *) * var->cmd_count); // cmd_count
 }

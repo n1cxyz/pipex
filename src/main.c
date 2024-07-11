@@ -66,7 +66,7 @@ int main(int ac, char *av[], char *envp[])
 
 	var.j = 0;
 
-	var.cmd_count = ac - 3; // not working yet
+	var.cmd_count = ac - 3;
 	ft_init_vars(&var);
 	ft_open_files(&var, av[1], av[ac - 1]); // close needed
 	ft_get_paths(&var, envp);
