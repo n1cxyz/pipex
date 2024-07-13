@@ -12,71 +12,78 @@
 
 #include "pipex.h"
 
-
-void	ft_exec(t_var *var, char **args, char *envp[])
+void	ft_exec1(t_var *var, char *envp[], int pipefd[2])
 {
-	int		pipefd[2];
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid;
 
-	if (pipe(pipefd) == -1)
-		ft_error_exit("error\npipe\n");
-	pid1 = fork();
-	if (pid1 == -1)
-		ft_error_exit("error\nfirst fork\n");
-	else if (pid1 == 0)
+	if (var->input_fd > 0 && var->cmd_1 == 1)
 	{
-		if (dup2(var->input_fd, STDIN_FILENO) == -1)
-			ft_error_exit("dup2 input_fd");
-		close(var->input_fd);
-		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-			ft_error_exit("dup2 pipefd");
-		close(pipefd[0]);
-        close(pipefd[1]);
-		execve(var->cmd_path[0], args, envp);
-		ft_error_exit("error\nexecve1\n");
+		pid = fork();
+		if (pid == -1)
+			ft_error_exit("error\nfirst fork\n", 1);
+		if (pid == 0)
+		{
+			dup2(var->input_fd, STDIN_FILENO);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(var->input_fd);
+			close(pipefd[1]);
+			execve(var->cmd_path[0], var->args[0], envp);
+		}
+		else
+			waitpid(pid, NULL, 0);
 	}
 	else
 	{
-		pid2 = fork();
-		if (pid2 == -1)
-			ft_error_exit("error\nfirst fork\n");
-		else if (pid2 == 0)
-		{
-			if (dup2(pipefd[0], STDIN_FILENO) == -1)
-				ft_error_exit("dup2 pipefd[0]");
-			if (dup2(var->output_fd, STDOUT_FILENO) == -1)
-				ft_error_exit("dup2 outputfd");
-			close(pipefd[0]);
-			close(pipefd[1]);
-			execve(var->cmd_path[1], var->args[1], envp);
-			ft_error_exit("error\nexecve1\n");
-		}
-		else
-			close(pipefd[0]);
-			close(pipefd[1]);
-			waitpid(pid1, NULL, 0);
-			waitpid(pid2, NULL, 0);
+		ft_putchar_fd('0', var->output_fd);
+		ft_putchar_fd('\n', var->output_fd);
 	}
 }
 
-int main(int ac, char *av[], char *envp[])
+void	ft_exec2(t_var *var, char *envp[], int pipefd[2])
 {
-	t_var		var;
+	pid_t	pid;
 
-	var.j = 0;
+	pid = fork();
+	if (pid == -1)
+		ft_error_exit("error\nfirst fork\n", 1);
+	if (pid == 0)
+	{
+		dup2(pipefd[0], STDIN_FILENO);
+		close (pipefd[0]);
+		dup2(var->output_fd, STDOUT_FILENO);
+		close (var->output_fd);
+		execve(var->cmd_path[1], var->args[1], envp);
+	}
+	else
+	{
+		waitpid(pid, NULL, 0);
+		close (pipefd[0]);
+	}
+}
 
-	var.cmd_count = ac - 3;
-	ft_init_vars(&var);
-	ft_open_files(&var, av[1], av[ac - 1]); // close needed
-	ft_get_paths(&var, envp);
-	ft_get_args(&var, av);
-	ft_get_cmd_path(&var, var.args[0][0]);
-	var.j++;
-	ft_get_cmd_path(&var, var.args[1][0]);
-	// what happens if file not found?
-	ft_exec(&var, var.args[0], envp);
-	//ft_exec(&var, var.args[1], envp);
+int	main(int ac, char *av[], char *envp[])
+{
+	t_var	var;
+	int		pipefd[2];
+
+	if (ac != 5)
+		ft_error_exit("Wrong number of argument", 0);
+	if (pipe(pipefd) == -1)
+		ft_error_exit("pipe", 1);
+	ft_init_vars(&var, ac, av, envp);
+	ft_get_cmd_paths(&var);
+	if (var.cmd_count != var.to_count && var.cmd_1 != 0 || var.to_count == 0)
+	{
+		ft_free_all(&var);
+		ft_error_exit("error\ncmd2 not found\n", 127);
+	}
+	ft_exec1(&var, envp, pipefd);
+	close(var.input_fd);
+	close(pipefd[1]);
+	if (var.cmd_1 == 1 && var.error == 1 && var.cmd_count == var.to_count)
+		ft_exec2(&var, envp, pipefd);
+	if (var.cmd_1 == 0)
+		ft_putstr_fd("error\ncmd1 not found\n", STDOUT_FILENO);
 	ft_free_all(&var);
-	return 0;
+	return (0);
 }

@@ -12,46 +12,60 @@
 
 #include "pipex.h"
 
-void    ft_get_paths(t_var *var, char *envp[])
+void	ft_get_paths(t_var *var, char *envp[])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], "PATH", 4) == 0)// find PATH environment 
-			break;
+		if (ft_strncmp(envp[i], "PATH", 4) == 0)
+			break ;
 		i++;
 	}
 	var->paths = ft_split(envp[i] + 5, ':');
 	if (!var->paths)
-		ft_error_exit("error\npath split\n");	// paths[/../../..][/bin/][NULL]
+		ft_error_exit("error\npath split\n", 1);
 }
 
-void    ft_get_args(t_var *var, char **av)
+void	ft_get_args(t_var *var, char **av)
 {
-	var->args[0] = ft_split(av[2], ' ');
-	var->args[1] = ft_split(av[3], ' ');
+	int	i;
+
+	i = 0;
+	while (i < var->cmd_count)
+	{
+		var->args[i] = ft_split(av[i + 2], ' ');
+		i++;
+	}
 }
 
-int	ft_get_cmd_path(t_var *var, char *arg)
+void	ft_get_cmd_paths(t_var *var)
 {
 	int		i;
+	int		j;
 	char	*temp_path;
 
 	i = 0;
-	while (var->paths[i])
+	while (i < var->cmd_count)
 	{
-		temp_path = ft_strjoin(var->paths[i], "/"); //find available command path /bin/ls
-		var->cmd_path[var->j] = ft_strjoin(temp_path, arg);  //with access("/bin/ls", X_OK)
-		free(temp_path);
-		if (access(var->cmd_path[var->j], X_OK) == 0)
-			return(1);
-		free(var->cmd_path[var->j]);
+		j = 0;
+		while (j < 10)
+		{
+			temp_path = ft_strjoin(var->paths[j], "/");
+			var->cmd_path[i] = ft_strjoin(temp_path, var->args[i][0]);
+			free(temp_path);
+			if (access(var->cmd_path[i], X_OK) == 0)
+			{
+				if (i == 0)
+					var->cmd_1 = 1;
+				var->to_count++;
+				break ;
+			}
+			if (j != 9)
+				free(var->cmd_path[i]);
+			j++;
+		}
 		i++;
 	}
-	var->cmd_path[var->j] = NULL;
-	ft_free_all(var);
-	ft_error_exit("error\ncommand not found\n");
-	return(0);
 }

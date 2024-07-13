@@ -28,6 +28,5 @@ char	*ft_strfjoin(char *s1, char const *s2)
 	while (*s2)
 		*result++ = *s2++;
 	*result = '\0';
-    //free (s1);
 	return (result_ptr);
 }

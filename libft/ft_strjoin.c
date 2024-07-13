@@ -30,7 +30,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	*result = '\0';
 	return (result_ptr);
 }
-
 /* int	main(void)
 {
 	char	s1[] = "Hello, ";
