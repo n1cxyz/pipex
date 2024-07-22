@@ -60,7 +60,14 @@ void	ft_exec2(t_var *var, char *envp[], int pipefd[2])
 		close (pipefd[0]);
 	}
 }
+/*
 
+
+fix open fd's
+
+
+
+*/
 int	main(int ac, char *av[], char *envp[])
 {
 	t_var	var;
@@ -72,7 +79,8 @@ int	main(int ac, char *av[], char *envp[])
 		ft_error_exit("pipe", 1);
 	ft_init_vars(&var, ac, av, envp);
 	ft_get_cmd_paths(&var);
-	if (var.cmd_count != var.to_count && var.cmd_1 != 0 || var.to_count == 0)
+	if ((var.cmd_count != var.to_count) && (var.cmd_1 != 0 || \
+	var.to_count == 0))
 	{
 		ft_free_all(&var);
 		ft_error_exit("error\ncmd2 not found\n", 127);

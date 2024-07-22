@@ -64,7 +64,7 @@ void	ft_open_files(t_var *var, char *infile, char *outfile)
 {
 	if (access(outfile, W_OK) == 0)
 	{
-		var->output_fd = open(outfile, O_WRONLY | O_CREAT, 00777);
+		var->output_fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 00777);
 		if (var->output_fd < 0)
 			ft_putstr_fd("error\nno such file\n", STDOUT_FILENO);
 	}
@@ -83,7 +83,7 @@ void	ft_open_files(t_var *var, char *infile, char *outfile)
 	{
 		ft_putchar_fd('0', var->output_fd);
 		ft_putchar_fd('\n', var->output_fd);
-		ft_error_exit("error\npermission denied: infile\n", 0);
+		ft_error_exit("error\n", 0);
 	}
 }
 

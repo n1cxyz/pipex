@@ -1,1 +1,10 @@
-100
+total 48
+drwxr-xr-x 2 dasal 2024_berlin    52 Jul 22 17:14 bin
+drwxr-xr-x 2 dasal 2024_berlin    21 Jul  8 14:18 include
+-rw-r--r-- 1 dasal 2024_berlin   608 Jul 13 11:14 infile
+drwxr-xr-x 2 dasal 2024_berlin  4096 Jul 22 17:14 libft
+-rw-r--r-- 1 dasal 2024_berlin  1034 Jul 22 17:00 Makefile
+-rwxrwxrwx 1 dasal 2024_berlin     0 Jul 22 17:15 outfile
+-rwxr-xr-x 1 dasal 2024_berlin 26176 Jul 22 17:14 pipex
+-rw-r--r-- 1 dasal 2024_berlin    45 Jul  8 14:16 README.md
+drwxr-xr-x 2 dasal 2024_berlin    52 Jul 10 12:44 src

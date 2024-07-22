@@ -14,10 +14,10 @@ VALGRIND	= @valgrind --leak-check=full --show-leak-kinds=all
 #--track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
 
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
-	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} ${LFLAGS} -o ${NAME}
 
 $(BIN)/%o: src/%c
-	${CC} -c $< ${IFLAGS} -o $@
+	${CC} ${CFLAGS} -c $< ${IFLAGS} -o $@
 
 $(BIN):
 	mkdir -p $(BIN)
