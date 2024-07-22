@@ -29,6 +29,7 @@ typedef struct s_var
 	char	**paths;
 	char	***args;
 	char	**cmd_path;
+	char	*temp_path;
 	int		error;
 	int		cmd_1;
 }	t_var;
@@ -39,6 +40,7 @@ void	ft_get_args(t_var *var, char **av);
 void	ft_get_cmd_paths(t_var *var);
 //		utils
 void	ft_free_all(t_var *var);
+void	ft_free_args(t_var *var);
 void	ft_init_vars(t_var *var, int ac, char *av[], char *envp[]);
 void	ft_open_files(t_var *var, char *infile, char *outfile);
 void	ft_error_exit(char *message, int code);

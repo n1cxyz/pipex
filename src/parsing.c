@@ -44,7 +44,6 @@ void	ft_get_cmd_paths(t_var *var)
 {
 	int		i;
 	int		j;
-	char	*temp_path;
 
 	i = 0;
 	while (i < var->cmd_count)
@@ -52,9 +51,9 @@ void	ft_get_cmd_paths(t_var *var)
 		j = 0;
 		while (j < 10)
 		{
-			temp_path = ft_strjoin(var->paths[j], "/");
-			var->cmd_path[i] = ft_strjoin(temp_path, var->args[i][0]);
-			free(temp_path);
+			var->temp_path = ft_strjoin(var->paths[j], "/");
+			var->cmd_path[i] = ft_strjoin(var->temp_path, var->args[i][0]);
+			free(var->temp_path);
 			if (access(var->cmd_path[i], X_OK) == 0)
 			{
 				if (i == 0)
