@@ -56,20 +56,18 @@ void	ft_free_args(t_var *var)
 
 void	ft_error_exit(char *message, int code)
 {
+	ft_close_fds();
 	ft_putstr_fd(message, STDOUT_FILENO);
 	exit(code);
 }
 
 void	ft_open_files(t_var *var, char *infile, char *outfile)
 {
-	if (access(outfile, W_OK) == 0)
-	{
-		var->output_fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 00777);
-		if (var->output_fd < 0)
-			ft_putstr_fd("error\nno such file\n", STDOUT_FILENO);
-	}
-	else
-		ft_error_exit("error\npermission denied: outfile\n", 1);
+	var->output_fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 00777);
+	if (var->output_fd < 0)
+		ft_putstr_fd("error\n", STDOUT_FILENO);
+	if (access(outfile, W_OK) != 0)
+		ft_error_exit("error\n", 1);
 	if (access(infile, R_OK) == 0)
 	{
 		var->input_fd = open(infile, O_RDONLY);

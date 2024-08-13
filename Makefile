@@ -11,7 +11,9 @@ LFLAGS		= -L$(LIBFT) -lft
 IFLAGS		= -I$(INCS) -I$(LIBFT_INCS)
 RM			= rm -rf
 VALGRIND	= @valgrind --leak-check=full --show-leak-kinds=all
-#--track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
+#--track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes --track-fds=yes
+
+all: $(NAME)
 
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${LFLAGS} -o ${NAME}

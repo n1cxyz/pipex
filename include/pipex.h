@@ -38,6 +38,7 @@ typedef struct s_var
 void	ft_get_paths(t_var *var, char *envp[]);
 void	ft_get_args(t_var *var, char **av);
 void	ft_get_cmd_paths(t_var *var);
+void	ft_close_fds(void);
 //		utils
 void	ft_free_all(t_var *var);
 void	ft_free_args(t_var *var);

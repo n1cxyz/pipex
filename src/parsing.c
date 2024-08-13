@@ -68,3 +68,15 @@ void	ft_get_cmd_paths(t_var *var)
 		i++;
 	}
 }
+
+void	ft_close_fds(void)
+{
+	int	i;
+
+	i = 1024;
+	while (i > 2)
+	{
+		close(i);
+		i--;
+	}
+}
