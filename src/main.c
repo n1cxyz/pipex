@@ -57,7 +57,8 @@ void	ft_exec2(t_var *var, char *envp[], int pipefd[2])
 	else
 		waitpid(pid, NULL, 0);
 }
-
+//	./pipex /dev/urandom cat "head -1" test4
+//	./pipex /dev/stdin cat cat /dev/stdout
 int	main(int ac, char *av[], char *envp[])
 {
 	t_var	var;

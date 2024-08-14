@@ -1,5 +1,5 @@
 NAME		= pipex
-CC			= gcc
+CC			= cc
 BIN			= bin
 SRC			= src/main.c src/utils.c src/parsing.c
 OBJS		= $(SRC:src/%c=$(BIN)/%o)
