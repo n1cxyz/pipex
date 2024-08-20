@@ -63,6 +63,8 @@ void	ft_error_exit(char *message, int code)
 
 void	ft_open_files(t_var *var, char *infile, char *outfile)
 {
+	if (access(infile, R_OK) != 0)
+		ft_putstr_fd("error\nno such file or directory\n", STDOUT_FILENO);
 	var->output_fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 00777);
 	if (var->output_fd < 0)
 		ft_putstr_fd("error\n", STDOUT_FILENO);

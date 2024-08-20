@@ -25,12 +25,13 @@ void	ft_exec1(t_var *var, char *envp[], int pipefd[2])
 		{
 			dup2(var->input_fd, STDIN_FILENO);
 			dup2(pipefd[1], STDOUT_FILENO);
-			close(var->input_fd);
 			close(pipefd[1]);
 			execve(var->cmd_path[0], var->args[0], envp);
 		}
 		else
-			waitpid(pid, NULL, 0);
+		{
+			close(pipefd[1]);
+		}
 	}
 	else
 	{
@@ -55,10 +56,12 @@ void	ft_exec2(t_var *var, char *envp[], int pipefd[2])
 		execve(var->cmd_path[1], var->args[1], envp);
 	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		close(var->input_fd);
+		close(pipefd[1]);
+	}
 }
-//	./pipex /dev/urandom cat "head -1" test4
-//	./pipex /dev/stdin cat cat /dev/stdout
+
 int	main(int ac, char *av[], char *envp[])
 {
 	t_var	var;
